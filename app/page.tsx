@@ -3,6 +3,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { ArrowRight, Brain, Search, FileText, Zap, ChevronRight } from "lucide-react"
 import Link from "next/link"
+import { ProjectOverview } from "@/components/home/project-overview"
+import { SystemArchitecture } from "@/components/home/system-architecture"
+import { SupportedDocumentTypes } from "@/components/home/supported-document-types"
+import { DatabaseStatistics } from "@/components/home/database-statistics"
 
 export default function HomePage() {
   return (
@@ -65,6 +69,26 @@ export default function HomePage() {
             </Button>
           </div>
         </div>
+      </section>
+
+      {/* Project Overview Section */}
+      <section>
+        <ProjectOverview />
+      </section>
+
+      {/* System Architecture Section */}
+      <section>
+        <SystemArchitecture />
+      </section>
+
+      {/* Supported Document Types Section */}
+      <section>
+        <SupportedDocumentTypes />
+      </section>
+
+      {/* Database Statistics Section */}
+      <section>
+        <DatabaseStatistics />
       </section>
 
       {/* Features Section */}
