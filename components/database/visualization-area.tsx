@@ -2,18 +2,29 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line } from "recharts"
+import {
+  PieChart,
+  Pie,
+  Cell,
+  ResponsiveContainer,
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+} from "recharts"
 
 // Mock data for visualizations
 const tissueDistribution = [
-  { tissue: "Brain", count: 2456 },
-  { tissue: "Heart", count: 1834 },
-  { tissue: "Liver", count: 1623 },
-  { tissue: "Kidney", count: 1445 },
-  { tissue: "Lung", count: 1289 },
-  { tissue: "Muscle", count: 1156 },
-  { tissue: "Blood", count: 987 },
-  { tissue: "Skin", count: 876 },
+  { name: "Brain", value: 2456, color: "#3B82F6" },
+  { name: "Heart", value: 1834, color: "#10B981" },
+  { name: "Liver", value: 1623, color: "#8B5CF6" },
+  { name: "Kidney", value: 1445, color: "#F59E0B" },
+  { name: "Lung", value: 1289, color: "#EF4444" },
+  { name: "Muscle", value: 1156, color: "#6B7280" },
+  { name: "Blood", value: 987, color: "#EC4899" },
+  { name: "Skin", value: 876, color: "#14B8A6" },
 ]
 
 const temporalTrends = [
@@ -40,13 +51,23 @@ export function VisualizationArea() {
           <TabsContent value="tissue-distribution" className="mt-6">
             <div className="h-80">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={tissueDistribution}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="tissue" />
-                  <YAxis />
+                <PieChart>
+                  <Pie
+                    data={tissueDistribution}
+                    cx="50%"
+                    cy="50%"
+                    labelLine={false}
+                    label={({ name, value }) => `${name}: ${value}`}
+                    outerRadius={120}
+                    fill="#8884d8"
+                    dataKey="value"
+                  >
+                    {tissueDistribution.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Pie>
                   <Tooltip />
-                  <Bar dataKey="count" fill="#3B82F6" />
-                </BarChart>
+                </PieChart>
               </ResponsiveContainer>
             </div>
             <p className="text-sm text-gray-600 mt-4">

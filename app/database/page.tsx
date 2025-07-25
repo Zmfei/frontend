@@ -1,52 +1,59 @@
-import { SearchAndFilterArea } from "@/components/database/search-and-filter-area"
-import { DataDisplayArea } from "@/components/database/data-display-area"
-import { VisualizationArea } from "@/components/database/visualization-area"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Download, Filter, ArrowRight } from "lucide-react"
+import Link from "next/link"
 
 export default function DatabasePage() {
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">G</span>
+      <div className="container mx-auto py-16">
+        <div className="text-center mb-16">
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">Database Access</h1>
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            Choose how you want to access the GeneExplore marker gene database
+          </p>
+        </div>
+
+        <div className="max-w-2xl mx-auto space-y-6">
+          <Card className="hover:shadow-lg transition-shadow duration-300">
+            <CardHeader className="text-center">
+              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Download className="h-8 w-8 text-blue-600" />
               </div>
-              <span className="text-2xl font-bold text-gray-900">GeneExplore</span>
-            </div>
-            <nav className="hidden md:flex items-center space-x-8">
-              <a href="/" className="text-gray-600 hover:text-blue-600 transition-colors">
-                Home
-              </a>
-              <a href="/paper-analysis" className="text-gray-600 hover:text-blue-600 transition-colors">
-                Analysis
-              </a>
-              <a href="/advanced-analysis" className="text-gray-600 hover:text-blue-600 transition-colors">
-                Advanced
-              </a>
-            </nav>
-          </div>
-        </div>
-      </header>
+              <CardTitle className="text-2xl">Download Full Data</CardTitle>
+            </CardHeader>
+            <CardContent className="text-center">
+              <p className="text-gray-600 mb-6">
+                Download the complete GeneExplore dataset with all marker genes, cell types, and tissue information
+              </p>
+              <Button size="lg" className="bg-blue-600 hover:bg-blue-700" asChild>
+                <Link href="/database/download">
+                  Download Dataset
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Link>
+              </Button>
+            </CardContent>
+          </Card>
 
-      <div className="container mx-auto py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Marker Gene Database</h1>
-          <p className="text-gray-600">Interactive search and visualization platform for marker gene knowledge</p>
-        </div>
-
-        <div className="grid lg:grid-cols-4 gap-6">
-          <div className="lg:col-span-1">
-            <SearchAndFilterArea />
-          </div>
-          <div className="lg:col-span-3">
-            <DataDisplayArea />
-          </div>
-        </div>
-
-        <div className="mt-8">
-          <VisualizationArea />
+          <Card className="hover:shadow-lg transition-shadow duration-300">
+            <CardHeader className="text-center">
+              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Filter className="h-8 w-8 text-green-600" />
+              </div>
+              <CardTitle className="text-2xl">Tissue Specific</CardTitle>
+            </CardHeader>
+            <CardContent className="text-center">
+              <p className="text-gray-600 mb-6">
+                Browse and filter marker genes by specific tissues, cell types, and other criteria
+              </p>
+              <Button size="lg" variant="outline" asChild>
+                <Link href="/database/tissue">
+                  Browse by Tissue
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Link>
+              </Button>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>

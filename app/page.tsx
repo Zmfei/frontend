@@ -6,38 +6,7 @@ import Link from "next/link"
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
-      {/* Header */}
-      <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">G</span>
-              </div>
-              <span className="text-2xl font-bold text-gray-900">GeneExplore</span>
-            </div>
-            <nav className="hidden md:flex items-center space-x-8">
-              <Link href="/database" className="text-gray-600 hover:text-blue-600 transition-colors">
-                Database
-              </Link>
-              <Link href="/paper-analysis" className="text-gray-600 hover:text-blue-600 transition-colors">
-                Analysis
-              </Link>
-              <Link href="/advanced-analysis" className="text-gray-600 hover:text-blue-600 transition-colors">
-                Advanced
-              </Link>
-            </nav>
-            <div className="flex items-center space-x-4">
-              <Button variant="ghost" className="hidden md:inline-flex">
-                Sign In
-              </Button>
-              <Button className="bg-blue-600 hover:bg-blue-700">Get Started</Button>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      {/* Hero Section */}
+      {/* Hero Section with Project Overview */}
       <section className="py-20 px-4">
         <div className="container mx-auto text-center">
           <h1 className="text-6xl md:text-8xl font-bold text-gray-900 mb-8 leading-tight">
@@ -68,6 +37,48 @@ export default function HomePage() {
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>
+          </div>
+
+          {/* Database Statistics - Merged from separate section */}
+          <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto mb-16">
+            <Card className="text-center hover:shadow-lg transition-shadow duration-300">
+              <CardHeader className="pb-2">
+                <div className="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center mx-auto mb-4">
+                  <TrendingUp className="h-8 w-8 text-blue-600" />
+                </div>
+                <CardTitle className="text-4xl font-bold text-blue-600">125,847</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <h3 className="font-semibold text-gray-900 mb-2">Total Markers</h3>
+                <p className="text-sm text-gray-600">Curated marker genes across all datasets</p>
+              </CardContent>
+            </Card>
+
+            <Card className="text-center hover:shadow-lg transition-shadow duration-300">
+              <CardHeader className="pb-2">
+                <div className="w-16 h-16 rounded-full bg-green-50 flex items-center justify-center mx-auto mb-4">
+                  <Users className="h-8 w-8 text-green-600" />
+                </div>
+                <CardTitle className="text-4xl font-bold text-green-600">2,456</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <h3 className="font-semibold text-gray-900 mb-2">Cell Types</h3>
+                <p className="text-sm text-gray-600">Distinct cell types identified and cataloged</p>
+              </CardContent>
+            </Card>
+
+            <Card className="text-center hover:shadow-lg transition-shadow duration-300">
+              <CardHeader className="pb-2">
+                <div className="w-16 h-16 rounded-full bg-purple-50 flex items-center justify-center mx-auto mb-4">
+                  <Globe className="h-8 w-8 text-purple-600" />
+                </div>
+                <CardTitle className="text-4xl font-bold text-purple-600">89</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <h3 className="font-semibold text-gray-900 mb-2">Tissues</h3>
+                <p className="text-sm text-gray-600">Different tissues and organs analyzed</p>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>
@@ -120,7 +131,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Supported Document Types */}
+      {/* Supported Document Types - 4 cards in one row */}
       <section className="py-20 px-4 bg-gray-50">
         <div className="container mx-auto">
           <div className="text-center mb-16">
@@ -130,7 +141,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             <Card className="hover:shadow-lg transition-shadow duration-300">
               <CardHeader className="text-center pb-4">
                 <div className="w-16 h-16 bg-red-100 rounded-lg flex items-center justify-center mx-auto mb-4">
@@ -178,7 +189,7 @@ export default function HomePage() {
               </CardContent>
             </Card>
 
-            <Card className="hover:shadow-lg transition-shadow duration-300 md:col-start-2">
+            <Card className="hover:shadow-lg transition-shadow duration-300">
               <CardHeader className="text-center pb-4">
                 <div className="w-16 h-16 bg-purple-100 rounded-lg flex items-center justify-center mx-auto mb-4">
                   <File className="h-8 w-8 text-purple-600" />
@@ -192,59 +203,6 @@ export default function HomePage() {
                   <span className="bg-gray-100 text-gray-700 px-3 py-1 rounded text-sm">.doc</span>
                   <span className="bg-gray-100 text-gray-700 px-3 py-1 rounded text-sm">.txt</span>
                 </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
-
-      {/* Database Statistics */}
-      <section className="py-20 px-4 bg-white">
-        <div className="container mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Database Statistics</h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Comprehensive marker gene knowledge base with real-time updates
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-            <Card className="text-center hover:shadow-lg transition-shadow duration-300">
-              <CardHeader className="pb-2">
-                <div className="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center mx-auto mb-4">
-                  <TrendingUp className="h-8 w-8 text-blue-600" />
-                </div>
-                <CardTitle className="text-4xl font-bold text-blue-600">125,847</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <h3 className="font-semibold text-gray-900 mb-2">Total Markers</h3>
-                <p className="text-sm text-gray-600">Curated marker genes across all datasets</p>
-              </CardContent>
-            </Card>
-
-            <Card className="text-center hover:shadow-lg transition-shadow duration-300">
-              <CardHeader className="pb-2">
-                <div className="w-16 h-16 rounded-full bg-green-50 flex items-center justify-center mx-auto mb-4">
-                  <Users className="h-8 w-8 text-green-600" />
-                </div>
-                <CardTitle className="text-4xl font-bold text-green-600">2,456</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <h3 className="font-semibold text-gray-900 mb-2">Cell Types</h3>
-                <p className="text-sm text-gray-600">Distinct cell types identified and cataloged</p>
-              </CardContent>
-            </Card>
-
-            <Card className="text-center hover:shadow-lg transition-shadow duration-300">
-              <CardHeader className="pb-2">
-                <div className="w-16 h-16 rounded-full bg-purple-50 flex items-center justify-center mx-auto mb-4">
-                  <Globe className="h-8 w-8 text-purple-600" />
-                </div>
-                <CardTitle className="text-4xl font-bold text-purple-600">89</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <h3 className="font-semibold text-gray-900 mb-2">Tissues</h3>
-                <p className="text-sm text-gray-600">Different tissues and organs analyzed</p>
               </CardContent>
             </Card>
           </div>
