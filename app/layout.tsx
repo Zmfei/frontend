@@ -7,7 +7,7 @@ import { Navigation } from "@/components/navigation"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "GeneExplore - Marker Gene Knowledge Base",
+  title: "DeepMarker - Marker Gene Knowledge Base",
   description: "Comprehensive marker gene knowledge base powered by AI-driven literature analysis",
     generator: 'v0.dev'
 }

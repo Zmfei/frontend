@@ -88,3 +88,21 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Force English text for file inputs */
+input[type="file"]::-webkit-file-upload-button {
+  font-family: inherit;
+}
+
+input[type="file"]::file-selector-button {
+  font-family: inherit;
+}
+
+/* Override any potential Chinese text in file inputs */
+input[type="file"]:lang(zh)::-webkit-file-upload-button::after {
+  content: "Choose File";
+}
+
+input[type="file"]:lang(zh)::file-selector-button::after {
+  content: "Choose File";
+}

@@ -10,7 +10,7 @@ export default function DatabasePage() {
         <div className="text-center mb-16">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">Database Access</h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Choose how you want to access the GeneExplore marker gene database
+            Choose how you want to access the DeepMarker marker gene database
           </p>
         </div>
 
@@ -24,7 +24,7 @@ export default function DatabasePage() {
             </CardHeader>
             <CardContent className="text-center">
               <p className="text-gray-600 mb-6">
-                Download the complete GeneExplore dataset with all marker genes, cell types, and tissue information
+                Download the complete DeepMarker dataset with all marker genes, cell types, and tissue information
               </p>
               <Button size="lg" className="bg-blue-600 hover:bg-blue-700" asChild>
                 <Link href="/database/download">
@@ -46,7 +46,7 @@ export default function DatabasePage() {
               <p className="text-gray-600 mb-6">
                 Browse and filter marker genes by specific tissues, cell types, and other criteria
               </p>
-              <Button size="lg" variant="outline" asChild>
+              <Button size="lg" className="bg-blue-600 hover:bg-blue-700" asChild>
                 <Link href="/database/tissue">
                   Browse by Tissue
                   <ArrowRight className="ml-2 h-5 w-5" />

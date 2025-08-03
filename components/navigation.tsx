@@ -37,9 +37,9 @@ export function Navigation() {
         {/* Left side - Logo */}
         <Link href="/" className="flex items-center space-x-2">
           <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-sm">G</span>
+            <span className="text-white font-bold text-sm">D</span>
           </div>
-          <span className="text-2xl font-bold text-gray-900">GeneExplore</span>
+          <span className="text-2xl font-bold text-gray-900">DeepMarker</span>
         </Link>
 
         {/* Desktop Navigation */}
@@ -49,8 +49,8 @@ export function Navigation() {
               key={item.href}
               href={item.href}
               className={cn(
-                "text-sm font-medium transition-colors hover:text-blue-600",
-                pathname === item.href ? "text-blue-600" : "text-gray-600",
+                "text-sm font-medium text-gray-600 transition-all duration-200 hover:text-blue-600 hover:scale-105",
+                pathname === item.href ? "text-blue-600 font-semibold" : "",
               )}
             >
               {item.name}
@@ -58,19 +58,19 @@ export function Navigation() {
           ))}
           <Button variant="ghost" size="sm" asChild>
             <a
-              href="https://github.com/your-org/GeneExplore"
+              href="https://github.com/your-org/DeepMarker"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center space-x-1"
+              className="flex items-center space-x-1 text-gray-600 transition-colors duration-200 hover:text-blue-600"
             >
               <span>GitHub</span>
               <ExternalLink className="h-3 w-3" />
             </a>
           </Button>
-          <Button variant="ghost" size="sm">
+          <Button variant="ghost" size="sm" className="transition-colors duration-200 hover:bg-blue-50">
             Sign In
           </Button>
-          <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
+          <Button size="sm" className="bg-blue-600 hover:bg-blue-700 transition-all duration-200 hover:scale-105">
             Get Started
           </Button>
         </div>
@@ -91,28 +91,28 @@ export function Navigation() {
                   href={item.href}
                   onClick={() => setIsOpen(false)}
                   className={cn(
-                    "text-sm font-medium transition-colors hover:text-blue-600 py-2",
-                    pathname === item.href ? "text-blue-600" : "text-gray-600",
+                    "text-base font-medium text-gray-600 transition-colors hover:text-blue-600 py-2",
+                    pathname === item.href ? "text-blue-600 font-semibold" : "",
                   )}
                 >
                   {item.name}
                 </Link>
               ))}
               <a
-                href="https://github.com/your-org/GeneExplore"
+                href="https://github.com/your-org/DeepMarker"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center space-x-1 text-sm font-medium text-gray-600 hover:text-blue-600 py-2"
+                className="flex items-center space-x-1 text-base font-medium text-gray-600 hover:text-blue-600 py-2"
                 onClick={() => setIsOpen(false)}
               >
                 <span>GitHub</span>
                 <ExternalLink className="h-3 w-3" />
               </a>
               <div className="flex flex-col space-y-2 pt-4">
-                <Button variant="ghost" size="sm">
+                <Button variant="ghost" size="sm" className="transition-colors duration-200 hover:bg-blue-50">
                   Sign In
                 </Button>
-                <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
+                <Button size="sm" className="bg-blue-600 hover:bg-blue-700 transition-all duration-200 hover:scale-105">
                   Get Started
                 </Button>
               </div>

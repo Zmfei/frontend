@@ -62,22 +62,31 @@ export function CellClassificationModule() {
           <div className="space-y-2">
             <Label htmlFor="data-upload">Upload Sequencing Data</Label>
             <div className="flex items-center space-x-4">
-              <Input
-                id="data-upload"
-                type="file"
-                accept=".csv,.tsv,.h5,.xlsx"
-                onChange={handleFileUpload}
-                className="flex-1"
-              />
-              <Button variant="outline" onClick={() => document.getElementById("data-upload")?.click()}>
-                <Upload className="h-4 w-4 mr-2" />
-                Browse
-              </Button>
+              <div className="flex-1 relative">
+                <input
+                  id="data-upload"
+                  type="file"
+                  accept=".csv,.tsv,.h5,.xlsx"
+                  onChange={handleFileUpload}
+                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                />
+                <div className="flex items-center justify-between px-3 py-2 border border-gray-300 rounded-md bg-white text-sm">
+                  <span className="text-gray-500">
+                    {uploadedFile ? uploadedFile.name : "Choose file..."}
+                  </span>
+                  <Button type="button" variant="outline" size="sm" className="ml-2">
+                    <Upload className="h-4 w-4 mr-1" />
+                    Browse
+                  </Button>
+                </div>
+              </div>
             </div>
-            {uploadedFile && (
-              <p className="text-sm text-gray-600">
-                Selected: {uploadedFile.name} ({(uploadedFile.size / 1024 / 1024).toFixed(2)} MB)
+            {uploadedFile ? (
+              <p className="text-sm text-green-600">
+                ✓ Selected: {uploadedFile.name} ({(uploadedFile.size / 1024 / 1024).toFixed(2)} MB)
               </p>
+            ) : (
+              <p className="text-sm text-gray-400">No file selected. Supported formats: CSV, TSV, H5, XLSX</p>
             )}
           </div>
 

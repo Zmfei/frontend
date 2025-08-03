@@ -12,7 +12,7 @@ export default function DatabaseDownloadPage() {
               <CardTitle className="text-3xl">Download Complete Dataset</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
-              <p className="text-lg text-gray-600">Download the complete GeneExplore dataset (CSV & JSON).</p>
+              <p className="text-lg text-gray-600">Download the complete DeepMarker dataset (CSV & JSON).</p>
 
               <div className="space-y-4">
                 <Button size="lg" className="w-full bg-blue-600 hover:bg-blue-700">
@@ -26,7 +26,6 @@ export default function DatabaseDownloadPage() {
                     <li>125,847 marker genes</li>
                     <li>2,456 cell types</li>
                     <li>89 tissue types</li>
-                    <li>Complete literature references</li>
                   </ul>
                 </div>
               </div>
