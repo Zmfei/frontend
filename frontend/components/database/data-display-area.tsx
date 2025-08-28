@@ -17,6 +17,70 @@ export function DataDisplayArea({ records = [] }: Props) {
   const [currentPage, setCurrentPage] = useState(1)
   const recordsPerPage = 8
 
+  // Export functions
+  const exportToCSV = () => {
+    if (records.length === 0) return
+    
+    // Define CSV headers
+    const headers = ['Species', 'Tissue', 'Cell Type', 'Marker Gene', 'PMID', 'Year']
+    
+    // Convert records to CSV format
+    const csvContent = [
+      headers.join(','),
+      ...records.map(record => [
+        `"${record.species_name || ''}",`,
+        `"${record.tissue_type || ''}",`,
+        `"${record.cell_type || ''}",`,
+        `"${record.marker_symbol || ''}",`,
+        `"${record.pmid || ''}",`,
+        `"${record.publication_year || ''}"`
+      ].join(''))
+    ].join('\n')
+    
+    // Create and download file
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+    const link = document.createElement('a')
+    const url = URL.createObjectURL(blob)
+    link.setAttribute('href', url)
+    link.setAttribute('download', `cellmarker_search_results_${new Date().toISOString().split('T')[0]}.csv`)
+    link.style.visibility = 'hidden'
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  }
+  
+  const exportToJSON = () => {
+    if (records.length === 0) return
+    
+    // Create clean JSON structure
+    const exportData = {
+      export_info: {
+        timestamp: new Date().toISOString(),
+        total_records: records.length,
+        source: 'DeepMarker Database'
+      },
+      records: records.map(record => ({
+        species: record.species_name,
+        tissue: record.tissue_type,
+        cell_type: record.cell_type,
+        marker_gene: record.marker_symbol,
+        pmid: record.pmid,
+        publication_year: record.publication_year
+      }))
+    }
+    
+    // Create and download file
+    const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json;charset=utf-8;' })
+    const link = document.createElement('a')
+    const url = URL.createObjectURL(blob)
+    link.setAttribute('href', url)
+    link.setAttribute('download', `cellmarker_search_results_${new Date().toISOString().split('T')[0]}.json`)
+    link.style.visibility = 'hidden'
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  }
+
   // Calculate pagination
   const totalPages = Math.ceil(records.length / recordsPerPage)
   const startIndex = (currentPage - 1) * recordsPerPage
@@ -42,11 +106,21 @@ export function DataDisplayArea({ records = [] }: Props) {
               )}
             </p>
             <div className="flex space-x-2">
-              <Button variant="outline" size="sm" disabled={records.length === 0}>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                disabled={records.length === 0}
+                onClick={exportToCSV}
+              >
                 <Download className="h-4 w-4 mr-2" />
                 Export CSV
               </Button>
-              <Button variant="outline" size="sm" disabled={records.length === 0}>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                disabled={records.length === 0}
+                onClick={exportToJSON}
+              >
                 <Download className="h-4 w-4 mr-2" />
                 Export JSON
               </Button>

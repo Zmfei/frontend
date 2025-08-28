@@ -27,7 +27,7 @@ export default function DatabasePage() {
                 Download the complete DeepMarker dataset with all marker genes, cell types, and tissue information
               </p>
               <Button size="lg" className="bg-blue-600 hover:bg-blue-700" asChild>
-                <Link href="/database/download">
+                <Link href="/download">
                   Download Dataset
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
@@ -40,15 +40,15 @@ export default function DatabasePage() {
               <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Filter className="h-8 w-8 text-green-600" />
               </div>
-              <CardTitle className="text-2xl">Tissue Specific</CardTitle>
+              <CardTitle className="text-2xl">Interactive Search</CardTitle>
             </CardHeader>
             <CardContent className="text-center">
               <p className="text-gray-600 mb-6">
-                Browse and filter marker genes by specific tissues, cell types, and other criteria
+                Search and filter marker genes by tissues, cell types, species, and other criteria with interactive visualization
               </p>
               <Button size="lg" className="bg-blue-600 hover:bg-blue-700" asChild>
-                <Link href="/database/tissue">
-                  Browse by Tissue
+                <Link href="/search">
+                  Start Searching
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>

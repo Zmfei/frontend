@@ -1,10 +1,11 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { ExternalLink, Download, ArrowLeft, Share, BookOpen } from "lucide-react"
+import { ExternalLink, Download, ArrowLeft, Share, BookOpen, Loader2 } from "lucide-react"
 import Link from "next/link"
 
 interface MarkerDetailProps {
@@ -12,51 +13,133 @@ interface MarkerDetailProps {
 }
 
 export function MarkerDetail({ markerSymbol }: MarkerDetailProps) {
-  // 基于真实数据的标记详情（这里使用模拟数据，实际应从API获取）
-  const markerInfo = {
-    symbol: markerSymbol,
-    full_name: "Cluster of Differentiation 68", // 大多数情况下为空，使用默认描述
-    gene_id: 968,
-    aliases: ["LAMP4", "SCARD1"],
-    description: "Cell marker associated with macrophage identification and immune response.",
-    total_records: 12194,
-    species_distribution: [
-      { species: "Human", count: 12193, percentage: 99.99 },
-      { species: "Mouse", count: 1, percentage: 0.01 }
-    ],
-    tissue_distribution: [
-      { tissue: "Blood", count: 5234, percentage: 42.9 },
-      { tissue: "Brain", count: 2456, percentage: 20.1 },
-      { tissue: "Lung", count: 1678, percentage: 13.8 },
-      { tissue: "Liver", count: 1234, percentage: 10.1 },
-      { tissue: "Others", count: 1592, percentage: 13.1 }
-    ],
-    cell_associations: [
-      { cell_type: "macrophage", count: 8456, confidence: "High" },
-      { cell_type: "monocyte", count: 2134, confidence: "Medium" },
-      { cell_type: "dendritic cell", count: 892, confidence: "Medium" },
-      { cell_type: "microglial cell", count: 712, confidence: "Low" }
-    ],
-    recent_publications: [
-      {
-        pmid: 35123456,
-        year: 2024,
-        title: "Single-cell analysis reveals CD68 expression patterns in tissue macrophages",
-        journal: "Nature Immunology"
-      },
-      {
-        pmid: 34567890,
-        year: 2023,
-        title: "Macrophage heterogeneity characterized by CD68 expression",
-        journal: "Cell Reports"
-      },
-      {
-        pmid: 33456789,
-        year: 2023,
-        title: "CD68+ cells in inflammatory environments",
-        journal: "Journal of Immunology"
+  const [markerInfo, setMarkerInfo] = useState<any>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    const fetchMarkerDetails = async () => {
+      try {
+        setLoading(true)
+        setError(null)
+        
+        // Fetch marker records
+        const response = await fetch(`http://localhost:8002/query/cell-markers?marker=${encodeURIComponent(markerSymbol)}`)
+        const data = await response.json()
+        
+        if (!response.ok) {
+          throw new Error(data.message || 'Failed to fetch marker data')
+        }
+        
+        const records = Array.isArray(data.data) ? data.data : []
+        
+        if (records.length === 0) {
+          setMarkerInfo({
+            symbol: markerSymbol,
+            total_records: 0,
+            species_distribution: [],
+            tissue_distribution: [],
+            cell_associations: [],
+            recent_publications: []
+          })
+          return
+        }
+        
+        // Process the data to create statistics
+        const processedInfo = processMarkerData(records, markerSymbol)
+        setMarkerInfo(processedInfo)
+        
+      } catch (err) {
+        console.error('Error fetching marker details:', err)
+        setError(err instanceof Error ? err.message : 'Failed to load marker data')
+      } finally {
+        setLoading(false)
       }
-    ]
+    }
+
+    fetchMarkerDetails()
+  }, [markerSymbol])
+
+  const processMarkerData = (records: any[], symbol: string) => {
+    // Calculate species distribution
+    const speciesCount: { [key: string]: number } = {}
+    records.forEach(record => {
+      const species = record.species_name || 'Unknown'
+      speciesCount[species] = (speciesCount[species] || 0) + 1
+    })
+    
+    const speciesDistribution = Object.entries(speciesCount)
+      .map(([species, count]) => ({
+        species,
+        count,
+        percentage: (count / records.length) * 100
+      }))
+      .sort((a, b) => b.count - a.count)
+    
+    // Calculate tissue distribution
+    const tissueCount: { [key: string]: number } = {}
+    records.forEach(record => {
+      const tissue = record.tissue_type || 'Unknown'
+      tissueCount[tissue] = (tissueCount[tissue] || 0) + 1
+    })
+    
+    const tissueDistribution = Object.entries(tissueCount)
+      .map(([tissue, count]) => ({
+        tissue,
+        count,
+        percentage: (count / records.length) * 100
+      }))
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 10) // Top 10 tissues
+    
+    // Calculate cell type associations
+    const cellTypeCount: { [key: string]: number } = {}
+    records.forEach(record => {
+      const cellType = record.cell_type || 'Unknown'
+      cellTypeCount[cellType] = (cellTypeCount[cellType] || 0) + 1
+    })
+    
+    const cellAssociations = Object.entries(cellTypeCount)
+      .map(([cell_type, count]) => {
+        let confidence = 'Low'
+        const percentage = (count / records.length) * 100
+        if (percentage > 20) confidence = 'High'
+        else if (percentage > 5) confidence = 'Medium'
+        
+        return { cell_type, count, confidence }
+      })
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 10) // Top 10 cell types
+    
+    // Get recent publications (unique PMIDs)
+    const uniquePMIDs = new Set()
+    const recentPublications = records
+      .filter(record => {
+        if (!record.pmid || uniquePMIDs.has(record.pmid)) return false
+        uniquePMIDs.add(record.pmid)
+        return true
+      })
+      .sort((a, b) => (b.publication_year || 0) - (a.publication_year || 0))
+      .slice(0, 5)
+      .map(record => ({
+        pmid: record.pmid,
+        year: record.publication_year || 'Unknown',
+        title: `Research on ${symbol} in ${record.cell_type || 'cells'}`,
+        journal: 'Scientific Publication'
+      }))
+    
+    return {
+      symbol,
+      full_name: `${symbol} marker gene`,
+      gene_id: null,
+      aliases: [],
+      description: `Cell marker gene with ${records.length} documented expression patterns across various cell types and tissues.`,
+      total_records: records.length,
+      species_distribution: speciesDistribution,
+      tissue_distribution: tissueDistribution,
+      cell_associations: cellAssociations,
+      recent_publications: recentPublications
+    }
   }
 
   const handlePMIDClick = (pmid: number) => {
@@ -70,6 +153,37 @@ export function MarkerDetail({ markerSymbol }: MarkerDetailProps) {
   const handleShare = () => {
     navigator.clipboard.writeText(window.location.href)
     // 显示分享成功提示
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4 text-blue-600" />
+          <p className="text-gray-600">Loading marker details...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-red-600 mb-4">{error}</p>
+          <Link href="/search">
+            <Button variant="outline">
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Back to Search
+            </Button>
+          </Link>
+        </div>
+      </div>
+    )
+  }
+
+  if (!markerInfo) {
+    return null
   }
 
   return (

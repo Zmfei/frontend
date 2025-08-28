@@ -212,81 +212,77 @@ export function SearchAndFilterArea({ onSearch }: SearchAndFilterAreaProps) {
 
   return (
     <div className="space-y-4">
-      {/* Main Search Bar */}
-      <Card className="border-0 shadow-sm bg-white">
-        <CardContent className="p-6">
-          <div className="flex items-center gap-4">
-            <div className="flex-1 relative">
-              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
-              <Input
-                placeholder={activeFilters.length > 0 ? "Search with active filters..." : "Search marker genes (e.g., CD68, BNC1)..."}
-                value={markerQuery}
-                onChange={(e) => setMarkerQuery(e.target.value)}
-                onKeyDown={handleKeyDown}
-                className="pl-12 pr-16 h-14 text-base border-2 border-gray-200 focus:border-blue-500 focus:ring-blue-500 rounded-lg transition-all duration-300"
-              />
-              {/* Circular Add Filter Button */}
-              <button
-                onClick={handleOpenFilterDialog}
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 w-10 h-10 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center group"
-                aria-label="Add filter"
-              >
-                <Plus className="h-5 w-5 transition-transform duration-300 group-hover:rotate-90" />
-              </button>
-            </div>
-            <Button 
-              onClick={handleSearch} 
-              disabled={loading} 
-              className="h-14 px-8 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg shadow-sm transition-all duration-300 hover:shadow-md"
+      {/* Main Search Bar - Google-like design */}
+      <div className="relative">
+        <div className="flex items-center gap-3 bg-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-gray-300 p-2 search-container">
+          <div className="flex-1 relative">
+            <Search className="absolute left-6 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+            <Input
+              placeholder={activeFilters.length > 0 ? "Search with active filters..." : "Search marker genes (e.g., CD68, BNC1)..."}
+              value={markerQuery}
+              onChange={(e) => setMarkerQuery(e.target.value)}
+              onKeyDown={handleKeyDown}
+              className="pl-14 pr-20 h-12 text-base border-0 focus:ring-0 focus:outline-none bg-transparent rounded-full"
+            />
+            {/* Circular Add Filter Button */}
+            <button
+              onClick={handleOpenFilterDialog}
+              className="absolute right-16 top-1/2 transform -translate-y-1/2 w-8 h-8 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-full transition-all duration-300 flex items-center justify-center group"
+              aria-label="Add filter"
             >
-              {loading ? (
-                <div className="flex items-center">
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                  Searching...
-                </div>
-              ) : (
-                "Search"
-              )}
-            </Button>
+              <Filter className="h-4 w-4 transition-transform duration-300 group-hover:scale-110" />
+            </button>
           </div>
-        </CardContent>
-      </Card>
+          <Button 
+            onClick={handleSearch} 
+            disabled={loading} 
+            className="h-10 px-6 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-full transition-all duration-300 hover:shadow-md mr-1"
+          >
+            {loading ? (
+              <div className="flex items-center">
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                Searching...
+              </div>
+            ) : (
+              "Search"
+            )}
+          </Button>
+        </div>
+      </div>
 
-      {/* Active Filters Display */}
+      {/* Active Filters Display - Minimalist design */}
       {activeFilters.length > 0 && (
-        <Card className="border-0 shadow-sm bg-gray-50 animate-in slide-in-from-top-2 duration-300">
-          <CardContent className="p-4">
-            <div className="flex items-center gap-3 flex-wrap">
-              <span className="text-sm font-medium text-gray-700 mr-2">Active Filters:</span>
-              {activeFilters.map((filter, index) => (
-                <Badge
-                  key={filter.type}
-                  variant="secondary"
-                  className="bg-white border-2 border-gray-200 text-gray-800 hover:bg-gray-50 hover:border-blue-300 cursor-pointer px-4 py-2 text-sm font-medium shadow-sm transition-all duration-300 animate-in slide-in-from-left-2 duration-300"
-                  style={{ animationDelay: `${index * 100}ms` }}
-                  onClick={() => handleEditFilter(filter.type)}
-                >
-                  <span className="mr-2 text-lg">
-                    {filterTypes.find(f => f.type === filter.type)?.icon}
-                  </span>
-                  <span className="font-semibold text-gray-900">
-                    {filter.label}:
-                  </span>
-                  <span className="ml-1 text-blue-600 font-medium">
-                    {filter.displayValues.join(', ')}
-                  </span>
-                  <X 
-                    className="h-4 w-4 ml-3 hover:text-red-500 hover:bg-red-50 rounded-full p-0.5 transition-all duration-200 hover:scale-110" 
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      handleRemoveFilter(filter.type)
-                    }}
-                  />
-                </Badge>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+        <div className="flex items-center justify-center animate-in slide-in-from-top-2 duration-300">
+          <div className="flex items-center gap-2 flex-wrap bg-white rounded-full px-4 py-2 shadow-md border border-gray-200">
+            <span className="text-xs font-medium text-gray-500 mr-1">Filters:</span>
+            {activeFilters.map((filter, index) => (
+              <Badge
+                key={filter.type}
+                variant="secondary"
+                className="bg-blue-50 border border-blue-200 text-blue-700 hover:bg-blue-100 cursor-pointer px-3 py-1 text-xs font-medium rounded-full transition-all duration-300 animate-in slide-in-from-left-2 duration-300"
+                style={{ animationDelay: `${index * 100}ms` }}
+                onClick={() => handleEditFilter(filter.type)}
+              >
+                <span className="mr-1 text-sm">
+                  {filterTypes.find(f => f.type === filter.type)?.icon}
+                </span>
+                <span className="font-medium">
+                  {filter.label}:
+                </span>
+                <span className="ml-1 font-semibold">
+                  {filter.displayValues.join(', ')}
+                </span>
+                <X 
+                  className="h-3 w-3 ml-2 hover:text-red-500 transition-all duration-200 hover:scale-110" 
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    handleRemoveFilter(filter.type)
+                  }}
+                />
+              </Badge>
+            ))}
+          </div>
+        </div>
       )}
 
       {/* Filter Selection Dialog */}
