@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useMemo } from "react"
 import { useRouter } from "next/navigation"
+import { storeSearchState } from "@/utils/storage"
 
 interface GeneFrequency {
   gene: string
@@ -63,13 +64,8 @@ export function GeneVisualization({ records, maxGenes = 30 }: GeneVisualizationP
   }
 
   const handleGeneClick = (gene: string) => {
-    // Store current search state in sessionStorage before navigating
-    const currentState = {
-      hasSearched: true,
-      records: records,
-      timestamp: Date.now()
-    }
-    sessionStorage.setItem('searchState', JSON.stringify(currentState))
+    // Store minimal search state using safe storage utility
+    storeSearchState(true, records.length)
     router.push(`/search/marker/${encodeURIComponent(gene)}`)
   }
 

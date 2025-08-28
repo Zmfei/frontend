@@ -5,6 +5,7 @@ import { SearchAndFilterArea } from "@/components/database/search-and-filter-are
 import { DataDisplayArea } from "@/components/database/data-display-area"
 import { GeneVisualization } from "@/components/database/gene-visualization"
 import { DataVisualization } from "@/components/database/data-visualization"
+import { getSearchState } from "@/utils/storage"
 
 export default function SearchPage() {
   const [records, setRecords] = useState<any[]>([])
@@ -12,18 +13,9 @@ export default function SearchPage() {
 
   // Restore search state from sessionStorage on component mount
   useEffect(() => {
-    const savedState = sessionStorage.getItem('searchState')
+    const savedState = getSearchState()
     if (savedState) {
-      try {
-        const state = JSON.parse(savedState)
-        // Only restore if the state is recent (within 1 hour)
-        if (state.timestamp && Date.now() - state.timestamp < 3600000) {
-          setRecords(state.records || [])
-          setHasSearched(state.hasSearched || false)
-        }
-      } catch (error) {
-        console.error('Error restoring search state:', error)
-      }
+      setHasSearched(savedState.hasSearched)
     }
   }, [])
 
